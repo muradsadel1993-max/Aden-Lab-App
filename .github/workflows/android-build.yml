@@ -1,28 +1,15 @@
 name: Build Android APK
-
-on:
-  push:
-    branches: [ main ]
-
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: expo/expo-github-action@v8
         with:
-          node-version: 22
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build APK
-        run: |
-          npx expo export:embed --platform android
-          chmod +x gradlew
-          ./gradlew assembleRelease
+          expo-version: latest
+          eas-version: latest
+      - name: Build
+        run: eas build --platform android --non-interactive
         env:
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
