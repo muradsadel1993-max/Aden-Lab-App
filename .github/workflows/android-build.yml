@@ -16,11 +16,11 @@ jobs:
         with:
           node-version: 18
 
+      - name: Setup EAS
+        run: npm install -g eas-cli
+
       - name: Install dependencies
         run: npm install
 
       - name: Build APK
-        run: |
-          npx expo export:embed --platform android
-          chmod +x ./gradlew
-          ./gradlew assembleRelease
+        run: eas build --platform android --local --non-interactive
